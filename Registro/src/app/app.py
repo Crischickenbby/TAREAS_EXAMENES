@@ -50,13 +50,6 @@ def login():
             cur.close()
             return "Error: El correo electrónico o la contraseña no coinciden."
 
-
-    
-#@app.router('/inicio_sesion', methods=['POST'])
-#def iniciar_sesion():
- #  if request.method == 'POST':   
-   #return ''
-
 #RUTA PARA QUE EL USUARIO SE REGISTRE
 @app.route('/add_user', methods=['POST'])
 def add_user():

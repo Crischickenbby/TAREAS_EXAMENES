@@ -180,3 +180,15 @@ display: none;
   color: #ffeba7;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
 }
+
+.space-above-image {
+  margin-top: 20px; /* Puedes ajustar este valor según necesites */
+}
+.space-above-image {
+  border-radius: 50%; /* Esto hace que la imagen sea redonda */
+}
+.space-above-image {
+  width: 50px; /* Define el ancho deseado */
+  height: auto; /* Mantén la proporción de aspecto original */
+}
+
