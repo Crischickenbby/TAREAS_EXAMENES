@@ -1,0 +1,24 @@
+body {
+    background-color: #1f2029;
+    font-family: sans-serif;
+}
+
+header {
+    background-color: #1f2029;
+    color: #ffeba7;
+    text-align: center;
+    padding: 10px;
+    /*Sombra*/  
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    /*Pegar el header a la pagina*/  
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0;
+}
