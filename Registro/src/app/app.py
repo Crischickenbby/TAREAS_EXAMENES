@@ -14,7 +14,7 @@ mysql = MySQL(app)
 
 #RUTA NORMAL DONDE SE INICIA LA APLICACION WEB
 @app.route('/')
-def index():
+def pagina_login():
     return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
@@ -43,7 +43,7 @@ def login():
         if user:
             # **El usuario existe, redirigir a la página de inicio**
             cur.close()
-            return 'Tu correo y contraseña si existen en la base de datos!!!'
+            return render_template('index.html')
 
         else:
             # **El usuario no existe, mostrar un mensaje de error**
@@ -63,7 +63,7 @@ def add_user():
         (fullname, phone, email, password))#
         mysql.connection.commit()
         cur.close()#BUENA PRACTICA, CERRAR CURSOR LUEGO DE HACER UNA CONSULTA
-        return redirect(url_for('index'))#otra forma de hacer el "return render_template('login.html')" el index es el nombre de la funcion de la principal ruta
+        return redirect(url_for('pagina_login'))#otra forma de hacer el "return render_template('login.html')" el index es el nombre de la funcion de la principal ruta
 
 #PARA EJECUTAR LA PLICACION WEB
 if __name__ == '__main__':
