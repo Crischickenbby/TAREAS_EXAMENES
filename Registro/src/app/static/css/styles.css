@@ -8,6 +8,7 @@ body{
 }
 a:hover {
 	text-decoration: none;
+  margin-top: 0px;
 }
 .link {
   color: #ffeba7;

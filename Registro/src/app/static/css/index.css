@@ -8,9 +8,9 @@ header {
     color: #ffeba7;
     text-align: center;
     padding: 10px;
-    /*Sombra*/  
+    /*Sombra*/
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-    /*Pegar el header a la pagina*/  
+    /*Pegar el header a la pagina*/
     position: fixed;
     top: 0;
     left: 0;
@@ -18,7 +18,31 @@ header {
     z-index: 10;
 }
 
-h1 {
-    font-size: 2em;
-    margin: 0;
+h1, h2, p{
+    color:#ffeba7;
+}   
+
+.letras {
+    margin: 20px;
+    color: #ffeba7;
+    text-decoration: none;
+}
+
+.foto {
+    border-radius: 50%;
+    /* Esto hace que la imagen sea redonda */
+    width: 50px;
+    /* Define el ancho deseado */
+    height: auto;
+    /* Mantén la proporción de aspecto original */
+}
+
+.tabla{
+    color: #ffeba7;
+    
+}
+
+.texto{
+    margin-left: 20%;
+    margin-right: 20%;
 }

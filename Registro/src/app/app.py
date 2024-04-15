@@ -13,7 +13,6 @@ app.config['MYSQL_DB'] = 'usuarios'
 
 mysql = MySQL(app)
 
-
 #RUTA NORMAL DONDE SE INICIA LA APLICACION WEB
 @app.route('/')
 def pagina_login():
@@ -45,12 +44,15 @@ def login():
         if user:
             # **El usuario existe, redirigir a la página de inicio**
             cur.close()
-            return render_template('index.html')
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM crud")
+            data = cur.fetchall()
+            return render_template('index.html', user=data)
 
         else:
             # **El usuario no existe, mostrar un mensaje de error**
             cur.close()
-            return "Error: El correo electrónico o la contraseña no coinciden."
+            return render_template("login.html")
 
 #RUTA PARA QUE EL USUARIO SE REGISTRE
 @app.route('/add_user', methods=['POST'])
@@ -66,6 +68,10 @@ def add_user():
         mysql.connection.commit()
         cur.close()#BUENA PRACTICA, CERRAR CURSOR LUEGO DE HACER UNA CONSULTA
         return redirect(url_for('pagina_login'))#otra forma de hacer el "return render_template('login.html')" el index es el nombre de la funcion de la principal ruta
+    
+@app.route('/informacion')
+def informacion():
+    return render_template('informacion.html')
 
 #PARA EJECUTAR LA PLICACION WEB
 if __name__ == '__main__':
