@@ -9,14 +9,15 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'usuarios'
-
-
 mysql = MySQL(app)
+
+app.secret_key = 'mysecretkey'
 
 #RUTA NORMAL DONDE SE INICIA LA APLICACION WEB
 @app.route('/')
 def pagina_login():
     return render_template('login.html')
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -68,10 +69,111 @@ def add_user():
         mysql.connection.commit()
         cur.close()#BUENA PRACTICA, CERRAR CURSOR LUEGO DE HACER UNA CONSULTA
         return redirect(url_for('pagina_login'))#otra forma de hacer el "return render_template('login.html')" el index es el nombre de la funcion de la principal ruta
-    
+
+
+#-------------------------------------------------
+
+'''@app.route('/add_user_crud', methods=['POST'])
+def add_user_crud():
+    if request.method == 'POST':
+        Nombres = request.form['Nombres']
+        ApellidoP= request.form['Apellido Paterno']
+        ApellidoM = request.form['Apellido Materno']
+        Numero = request.form['Telefono']
+        Area = request.form['Area']
+        cur = mysql.connection.cursor()
+        cur.execute('INSERT INTO crud (Nombres, Apellido_paterno, Apellido_Materno, Telefono, Area) VALUES (%s, %s, %s, %s, %s)',
+                    (Nombres, ApellidoP, ApellidoM, Numero, Area))
+        mysql.connection.commit()
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM crud")
+        data = cur.fetchall()
+        flash('Trabajador agregado correctamente')
+        return render_template('index.html', user=data)'''
+
+@app.route('/add_user_crud', methods=['POST'])
+def add_user_crud():
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        Nombres = request.form['Nombres']
+        ApellidoP = request.form['Apellido Paterno']
+        ApellidoM = request.form['Apellido Materno']
+        Numero = request.form['Telefono']
+        Area = request.form['Area']
+        
+        # Iniciar cursor para ejecutar consultas SQL
+        cur = mysql.connection.cursor()
+        # Ejecutar la consulta para insertar el usuario en la base de datos
+        cur.execute('INSERT INTO crud (Nombres, Apellido_paterno, Apellido_Materno, Telefono, Area) VALUES (%s, %s, %s, %s, %s)',
+                    (Nombres, ApellidoP, ApellidoM, Numero, Area))
+        # Confirmar los cambios en la base de datos
+        mysql.connection.commit()
+         # Mostrar mensaje de éxito
+        flash('Trabajador agregado correctamente')
+        cur.close()
+        # Obtener todos los usuarios de la base de datos
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM crud")
+        # Obtener los datos de la consulta
+        data = cur.fetchall()
+        # Cerrar el cursor
+        cur.close()
+        # Renderizar la plantilla 'index.html' y pasar los datos de los usuarios
+        return render_template('index.html', user=data)
+
+
 @app.route('/informacion')
 def informacion():
     return render_template('informacion.html')
+
+@app.route('/index')
+def Index():
+    return render_template('index.html')
+
+@app.route('/edit/<id>')
+def edit_user(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM crud WHERE id = %s', (id))
+    data = cur.fetchall()
+    return render_template('edid-contact.html', contact = data[0])
+
+@app.route('/update/<id>', methods = ['POST'])
+def update_contact(id):
+    if request.method == 'POST':
+        Nombres = request.form['Nombres']
+        ApellidoP = request.form['ApellidoP']
+        ApellidoM = request.form['ApellidoM']
+        Telefono = request.form['Telefono']
+        Area = request.form['Area']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE crud SET Nombres = %s, Apellido_paterno = %s, Apellido_Materno = %s, Telefono = %s, Area = %s WHERE id = %s", (Nombres, ApellidoP, ApellidoM, Telefono, Area))
+        mysql.connection.commit()
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM crud")
+        # Obtener los datos de la consulta
+        data = cur.fetchall()
+        # Cerrar el cursor
+        cur.close()
+        flash('Contacto Actualizado')
+        return render_template('index.html', user=data)
+
+
+
+@app.route('/delete/<string:id>')
+def delete_user(id):
+    cur = mysql.connection.cursor()
+    cur.execute('DELETE FROM crud WHERE id = {0}'.format(id))
+    mysql.connection.commit()
+     # Obtener todos los usuarios de la base de datos
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM crud")
+    # Obtener los datos de la consulta
+    data = cur.fetchall()
+    # Cerrar el cursor
+    cur.close()
+    flash('Trabajador eliminado exitosamente')
+    return render_template('index.html', user=data)
+
 
 #PARA EJECUTAR LA PLICACION WEB
 if __name__ == '__main__':
